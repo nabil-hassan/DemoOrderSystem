@@ -13,7 +13,10 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import demo.dao.AddressDAO;
+import demo.dao.CreditCardDAO;
 import demo.dao.CustomerDAO;
+import demo.dao.ItemDAO;
 import demo.dao.OrderDAO;
 
 @Configuration
@@ -84,6 +87,16 @@ public class PersistenceConfig {
 	}
 
 	@Bean
+	public AddressDAO addressDAO(SessionFactory sessionFactory) {
+		return new AddressDAO(sessionFactory);
+	}
+
+	@Bean
+	public CreditCardDAO creditCardDAO(SessionFactory sessionFactory) {
+		return new CreditCardDAO(sessionFactory);
+	}
+
+	@Bean
 	public CustomerDAO customerDAO(SessionFactory sessionFactory) {
 		return new CustomerDAO(sessionFactory);
 	}
@@ -91,6 +104,11 @@ public class PersistenceConfig {
 	@Bean
 	public OrderDAO OrderDAO(SessionFactory sessionFactory) {
 		return new OrderDAO(sessionFactory);
+	}
+
+	@Bean
+	public ItemDAO ItemDAO(SessionFactory sessionFactory) {
+		return new ItemDAO(sessionFactory);
 	}
 
 }

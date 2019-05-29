@@ -42,7 +42,8 @@ public class Address extends HibernateEntity {
 	
 	@Column
 	private Double longitude;
-	
+
+	@SuppressWarnings("unused")
 	public Address() {
 	}
 

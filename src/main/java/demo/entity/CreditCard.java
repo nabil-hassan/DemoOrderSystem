@@ -36,8 +36,8 @@ public class CreditCard extends HibernateEntity {
 	
 	@Column
 	private Integer securityCode;
-	
-	
+
+	@SuppressWarnings("unused")
 	public CreditCard() {
 	}
 

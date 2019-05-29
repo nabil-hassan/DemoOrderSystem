@@ -9,15 +9,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "item")
 public class Item extends HibernateEntity {
-	
-	public Item() {
-	}
-
-	public Item(String manufacturer, String modelNumber, Integer stockQuantity) {
-		this.manufacturer = manufacturer;
-		this.modelNumber = modelNumber;
-		this.stockQuantity = stockQuantity;
-	}
 
 	@Column
 	private String manufacturer;
@@ -26,10 +17,10 @@ public class Item extends HibernateEntity {
 	private String modelNumber;
 	
 	@Column
-	private String colour;
-	
-	@Column
 	private Integer weightKg;
+
+	@Column
+	private Double cost;
 	
 	@Column
 	private String dimensions;
@@ -43,20 +34,22 @@ public class Item extends HibernateEntity {
 	@Column
 	private Integer stockQuantity;
 
+	@SuppressWarnings("unused")
+	public Item() {
+	}
+
+	public Item(String manufacturer, String modelNumber, Integer stockQuantity) {
+		this.manufacturer = manufacturer;
+		this.modelNumber = modelNumber;
+		this.stockQuantity = stockQuantity;
+	}
+
 	public String getManufacturer() {
 		return manufacturer;
 	}
 
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
-	}
-
-	public String getColour() {
-		return colour;
-	}
-
-	public void setColour(String colour) {
-		this.colour = colour;
 	}
 
 	public String getModelNumber() {
@@ -105,6 +98,14 @@ public class Item extends HibernateEntity {
 
 	public void setStockQuantity(Integer stockQuantity) {
 		this.stockQuantity = stockQuantity;
+	}
+
+	public Double getCost() {
+		return cost;
+	}
+
+	public void setCost(Double cost) {
+		this.cost = cost;
 	}
 
 	@Override

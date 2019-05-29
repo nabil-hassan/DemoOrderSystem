@@ -48,7 +48,7 @@ public class OrderVerifier extends Verifier<Order> {
 		}
 
 		if (!expected.getItems().isEmpty()) {
-			assertEquals(idSortedSet(expected.getItems()), idSortedSet(actual.getItems()));
+			assertEquals(idSortList(expected.getItems()), idSortList(actual.getItems()));
 		} else {
 			assertTrue(actual.getItems().isEmpty());
 		}

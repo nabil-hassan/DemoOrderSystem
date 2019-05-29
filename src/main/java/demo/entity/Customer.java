@@ -25,8 +25,7 @@ import org.hibernate.annotations.FetchMode;
 @Table(name="customer")
 public class Customer extends HibernateEntity {
 
-	@OneToOne(mappedBy = "customer", orphanRemoval = true)
-	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Basket basket;
 	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -66,6 +65,7 @@ public class Customer extends HibernateEntity {
 		this.emailAddress = emailAddress;
 	}
 
+	@SuppressWarnings("unused")
 	public Customer() {
 	}
 

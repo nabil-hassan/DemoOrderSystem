@@ -31,11 +31,9 @@ public class OrderDAOTest extends DAOTest {
 	private OrderVerifier verifier;
 	
 	private Session session;
-	private SimpleDateFormat sdf;
 
 	@Before
 	public void setup() {
-		sdf = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss");
 		session = dao.getCurrentSession();
 	}
 
@@ -99,6 +97,7 @@ public class OrderDAOTest extends DAOTest {
 		session.flush();
 
 		Order order = new Order(customer, new Date(), OrderStatus.NEW, address, 200.00, card);
+		order.addItem(item);
 		order.addItem(item);
 		customer.addOrder(order);
 		return order;

@@ -1,8 +1,12 @@
 package demo.verifier;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import org.springframework.util.comparator.Comparators;
 
 import demo.entity.HibernateEntity;
 
@@ -18,5 +22,9 @@ public abstract class Verifier<T extends HibernateEntity> {
 	public <V extends HibernateEntity> Set<V> idSortedSet(Set<V> elements) {
 		return new TreeSet<>(Comparator.comparing(HibernateEntity::getId));
 	}
-	
+
+	public <V extends HibernateEntity> List<V> idSortList(List<V> elements) {
+		return elements.stream().sorted(Comparator.comparing(HibernateEntity::getId)).collect(Collectors.toList());
+	}
+
 }

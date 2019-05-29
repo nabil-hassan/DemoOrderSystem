@@ -1,9 +1,7 @@
 package demo.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import org.hibernate.Session;
@@ -47,7 +45,7 @@ public class CustomerDAOTest extends DAOTest {
 		Customer customer = buildCustomer();
 
 		session.evict(customer);
-		
+
 		Customer retrieved = dao.get(customer.getId());
 		verifier.verifyValuesMatch(customer, retrieved);
 	}
@@ -90,6 +88,20 @@ public class CustomerDAOTest extends DAOTest {
 		assertEquals(1, addressRowCount);
 	}
 
+	@Test
+	public void update_verifyClearBasketItems_cascades() {
+		Customer customer = buildCustomer();
+
+		dao.create(customer);
+		session.flush();
+
+		customer.getBasket().clearItems();
+		session.flush();
+
+		int basketItemsRowCount = countRowsInTable("basket_items");
+		assertEquals(0, basketItemsRowCount);
+	}
+
 	private Customer buildCustomer() {
 		Item item = new Item("Sony", "SN9090", 99);
 		session.save(item);
@@ -103,8 +115,9 @@ public class CustomerDAOTest extends DAOTest {
 		CreditCard card = new CreditCard(customer, "Mr M Jones", "1020304050607080", "10-20-30", "09/19", 999);
 		customer.addCreditCard(card);
 
-		Basket basket = new Basket(new Date(), customer);
+		Basket basket = new Basket(customer);
 		basket.addItem(item);
+
 		customer.setBasket(basket);
 
 		Order order = new Order(customer, new Date(), OrderStatus.NEW, address, 10.00, null);

@@ -1,7 +1,9 @@
 package demo.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,7 +31,7 @@ public class Order extends HibernateEntity {
 	@JoinTable(name = "order_items",
 			joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id", updatable = false, nullable = false),
 			inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id", updatable = false, nullable = false))
-	private Set<Item> items = new HashSet<Item>();
+	private List<Item> items = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "delivery_address_id")
@@ -135,11 +137,11 @@ public class Order extends HibernateEntity {
 		this.cancelledDate = cancelledDate;
 	}
 
-	public Set<Item> getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 
-	private void setItems(Set<Item> items) {
+	private void setItems(List<Item> items) {
 		this.items = items;
 	}
 
