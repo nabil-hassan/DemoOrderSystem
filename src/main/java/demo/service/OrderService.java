@@ -60,6 +60,18 @@ public class OrderService {
         return order;
     }
 
+    @Transactional
+    public List<Order> findAllOrders(Long customerId) {
+        Customer customer = customerDAO.get(customerId);
+
+        if (customer == null) {
+            throw new EntityNotFoundException(Customer.class, customerId);
+        }
+
+        return customer.getOrders().stream()
+                .sorted(Comparator.comparing(Order::getCreatedDate)).collect(Collectors.toList());
+    }
+
     /**
      * Retrieves all orders associated with the specified customer, sorted in descending order of creation date.
      * <p>

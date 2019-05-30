@@ -2,6 +2,7 @@ package demo.dao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,8 @@ public class CustomerDAOTest extends DAOTest {
 	public void setup() {
 		session = dao.getCurrentSession();
 	}
+
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyyy HH:mm:ss");
 
 	/**
 	 * Verifies cascade settings when creating a customer.
@@ -113,7 +116,7 @@ public class CustomerDAOTest extends DAOTest {
 
 		Item existingItem = customer.getBasket().getItems().get(0);
 
-		Item newItem = new Item("Tesla", "TS001", 909);
+		Item newItem = new Item("Tesla", "TS001", 909, 15.00);
 		session.save(newItem);
 		Basket basket = customer.getBasket();
 		basket.addItem(newItem);
@@ -148,7 +151,7 @@ public class CustomerDAOTest extends DAOTest {
 	}
 
 	private Customer buildCustomer() {
-		Item item = new Item("Sony", "SN9090", 99);
+		Item item = new Item("Sony", "SN9090", 99, 23.00);
 		session.save(item);
 
 		Address address = new Address("UK", "Bedford", "Luton", "LU4 8AW", "1 Maple Road");
@@ -170,7 +173,13 @@ public class CustomerDAOTest extends DAOTest {
 		session.flush();
 		return customer;
 	}
-
-
+	
+	private Date toDate(String s) {
+		try {
+			return sdf.parse(s);
+		} catch (Exception ex) {
+			throw new RuntimeException("Unable to parse provided date string", ex);
+		}
+	}
 
 }

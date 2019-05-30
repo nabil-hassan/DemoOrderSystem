@@ -2,15 +2,11 @@ package demo.dao;
 
 import static org.junit.Assert.assertEquals;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.hibernate.Session;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import demo.entity.Address;
@@ -80,7 +76,7 @@ public class OrderDAOTest extends DAOTest {
 	}
 
 	private Order buildOrder() {
-		Item item = new Item("Sony", "SN9090", 99);
+		Item item = new Item("Sony", "SN9090", 99, 20.00);
 		session.save(item);
 
 		Address address = new Address("UK", "Bedford", "Luton", "LU4 8AW", "1 Maple Road");

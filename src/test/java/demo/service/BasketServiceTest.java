@@ -62,7 +62,7 @@ public class BasketServiceTest extends BaseUnitTest {
         Long customerId = 303L, itemId = 404L;
 
         Customer customer = new Customer();
-        Item item = new Item("Sony", "VAIO01", 5);
+        Item item = new Item("Sony", "VAIO01", 5, 20.00);
 
         when(customerDAO.get(eq(customerId))).thenReturn(customer);
         when(itemDAO.get(eq(itemId))).thenReturn(item);
@@ -77,8 +77,8 @@ public class BasketServiceTest extends BaseUnitTest {
     public void addToBasket_verifyItemAddedToExisting_whenValid() {
         Long customerId = 505L, item2Id = 606L;
 
-        Item item1 = new Item("LG", "WIDE01", 78);
-        Item item2 = new Item("Samsung", "GALAXY01", 909);
+        Item item1 = new Item("LG", "WIDE01", 78, 30.00);
+        Item item2 = new Item("Samsung", "GALAXY01", 909, 50.00);
 
         Customer customer = new Customer();
         Basket basket = new Basket(customer);
@@ -159,7 +159,7 @@ public class BasketServiceTest extends BaseUnitTest {
     public void removeFromBasket_expectUpdatedBasketReturned_whenBasketContainsItem() {
         Long customerId = 2020L, itemId = 3030L;
 
-        Item basketItem = new Item("Sharp", "TSA0001", 9090);
+        Item basketItem = new Item("Sharp", "TSA0001", 9090, 20.00);
         ReflectionTestUtils.setField(basketItem, "id", itemId);
 
         Basket basket = new Basket();

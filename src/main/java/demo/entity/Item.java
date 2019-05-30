@@ -38,10 +38,11 @@ public class Item extends HibernateEntity {
 	public Item() {
 	}
 
-	public Item(String manufacturer, String modelNumber, Integer stockQuantity) {
+	public Item(String manufacturer, String modelNumber, Integer stockQuantity, Double cost) {
 		this.manufacturer = manufacturer;
 		this.modelNumber = modelNumber;
 		this.stockQuantity = stockQuantity;
+		this.cost = cost;
 	}
 
 	public String getManufacturer() {

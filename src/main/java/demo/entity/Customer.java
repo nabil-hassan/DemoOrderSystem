@@ -28,13 +28,13 @@ public class Customer extends HibernateEntity {
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Basket basket;
 	
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<Order> orders = new HashSet<>();
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<CreditCard> cards = new HashSet<>();
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_addresses",
 			joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, nullable = false),
 			inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id", updatable = false, nullable = false))
@@ -163,5 +163,12 @@ public class Customer extends HibernateEntity {
 
 	public void removeCreditCard(CreditCard card) {
 		cards.remove(card);
+	}
+
+	@Transient
+	public String getFullName() {
+		return (title != null ? title.name() + " " : "")
+				+ (forename != null ? forename + " " : "")
+				+ (surname != null ? surname : "").trim();
 	}
 }

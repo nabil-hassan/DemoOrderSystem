@@ -1,10 +1,14 @@
 package demo.entity;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
+
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "address")
@@ -23,24 +27,31 @@ public class Address extends HibernateEntity {
 	private String postcode;
 
 	@Column
+	@JsonInclude(NON_NULL)
 	private String line1;
 
 	@Column
+	@JsonInclude(NON_NULL)
 	private String line2;
 	
 	@Column
+	@JsonInclude(NON_NULL)
 	private String line3;
 	
 	@Column
+	@JsonInclude(NON_NULL)
 	private String line4;
 
 	@Column
+	@JsonInclude(NON_NULL)
 	private String line5;
 	
 	@Column
+	@JsonInclude(NON_NULL)
 	private Double latitude;
 	
 	@Column
+	@JsonInclude(NON_NULL)
 	private Double longitude;
 
 	@SuppressWarnings("unused")
