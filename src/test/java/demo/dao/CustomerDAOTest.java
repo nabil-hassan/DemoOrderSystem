@@ -2,7 +2,9 @@ package demo.dao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.junit.Before;
@@ -100,6 +102,49 @@ public class CustomerDAOTest extends DAOTest {
 
 		int basketItemsRowCount = countRowsInTable("basket_items");
 		assertEquals(0, basketItemsRowCount);
+	}
+
+	@Test
+	public void update_verifyAddToBasket_cascades() {
+		Customer customer = buildCustomer();
+
+		dao.create(customer);
+		session.flush();
+
+		Item existingItem = customer.getBasket().getItems().get(0);
+
+		Item newItem = new Item("Tesla", "TS001", 909);
+		session.save(newItem);
+		Basket basket = customer.getBasket();
+		basket.addItem(newItem);
+
+		session.flush();
+
+		session.evict(customer);
+
+		Customer persisted = dao.get(customer.getId());
+		List<Item> persistedBasketItems = persisted.getBasket().getItems();
+		assertEquals(2, persistedBasketItems.size());
+		persistedBasketItems.sort(Comparator.comparing(Item::getManufacturer));
+		assertEquals(existingItem.getId(), persistedBasketItems.get(0).getId());
+		assertEquals(newItem.getId(), persistedBasketItems.get(1).getId());
+	}
+
+	@Test
+	public void update_verifyRemoveFromBasket_cascades() {
+		Customer customer = buildCustomer();
+
+		dao.create(customer);
+		session.flush();
+
+		Item item = customer.getBasket().getItems().get(0);
+		customer.getBasket().getItems().remove(item);
+
+		session.flush();
+
+		Customer persisted = dao.get(customer.getId());
+		List<Item> persistedBasketItems = persisted.getBasket().getItems();
+		assertEquals(0, persistedBasketItems.size());
 	}
 
 	private Customer buildCustomer() {
