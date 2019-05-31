@@ -21,6 +21,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="customer")
 public class Customer extends HibernateEntity {
@@ -33,7 +35,7 @@ public class Customer extends HibernateEntity {
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<CreditCard> cards = new HashSet<>();
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_addresses",
 			joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, nullable = false),

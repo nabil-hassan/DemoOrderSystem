@@ -68,8 +68,7 @@ public class OrderService {
             throw new EntityNotFoundException(Customer.class, customerId);
         }
 
-        return customer.getOrders().stream()
-                .sorted(Comparator.comparing(Order::getCreatedDate)).collect(Collectors.toList());
+        return customer.getOrders().stream().sorted(Comparator.comparing(Order::getCreatedDate)).collect(Collectors.toList());
     }
 
     /**

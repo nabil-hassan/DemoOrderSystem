@@ -65,7 +65,7 @@ public class BaseDataInitialiser {
         Item item4 = new Item("Dulux", "D01", 100, 95.00);
         itemDAO.create(item4);
 
-        Item item5 = new Item("EPSOM", "E01", 100, 115.99);
+        Item item5 = new Item("Epsom", "E01", 100, 115.99);
         itemDAO.create(item5);
 
         // CUSTOMERS
@@ -88,18 +88,20 @@ public class BaseDataInitialiser {
         //ORDERS
         Order mantisOrder1 = new Order(mantis, toDate("20/08/2018 23:11:12"), OrderStatus.DELIVERED,
                 mantisAddress, 200.00, mantisCard);
+        mantisOrder1.setDeliveredDate(toDate("21/08/2018 00:11:12"));
         mantisOrder1.addItem(item);
         mantisOrder1.addItem(item2);
         mantis.addOrder(mantisOrder1);
 
         Order mantisOrder2 = new Order(mantis, toDate("10/10/2017 20:11:12"), OrderStatus.CANCELLED,
                 mantisAddress, 115.99, mantisCard);
+        mantisOrder2.setCancelledDate(toDate("10/10/2017 21:31:12"));
         mantisOrder2.addItem(item5);
         mantis.addOrder(mantisOrder2);
 
         Order aliceOrder = new Order(alice, toDate("23/01/2019 19:00:32"), OrderStatus.DELIVERED,
-                aliceAddress, 45.00,
-                aliceCard);
+                aliceAddress, 45.00, aliceCard);
+        aliceOrder.setDeliveredDate(toDate("23/01/2019 123:00:32"));
         aliceOrder.addItem(item2);
         alice.addOrder(aliceOrder);
     }

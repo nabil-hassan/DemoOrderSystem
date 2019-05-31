@@ -11,6 +11,7 @@ import demo.dao.ItemDAO;
 import demo.dao.OrderDAO;
 import demo.service.BasketService;
 import demo.service.CustomerService;
+import demo.service.ItemService;
 import demo.service.OrderService;
 
 @Configuration
@@ -31,6 +32,11 @@ public class ServiceConfig {
     public OrderService orderService(AddressDAO addressDAO, CreditCardDAO creditCardDAO, CustomerDAO customerDAO,
             OrderDAO orderDAO) {
         return new OrderService(addressDAO, creditCardDAO, customerDAO, orderDAO);
+    }
+
+    @Bean
+    public ItemService itemService(ItemDAO itemDAO) {
+        return new ItemService(itemDAO);
     }
 
 }
