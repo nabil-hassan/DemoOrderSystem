@@ -1,51 +1,25 @@
-package demo.entity;
+package demo.entity.persistent;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 @Entity
 @Table(name = "orders")
 public class Order extends HibernateEntity {
-
-	@ManyToOne
-	@PrimaryKeyJoinColumn(name = "customer_id", referencedColumnName="id")
-	private Customer customer;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "order_items",
-			joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id", updatable = false, nullable = false),
-			inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id", updatable = false, nullable = false))
-	private List<Item> items = new ArrayList<>();
-
-	@ManyToOne
-	@JoinColumn(name = "delivery_address_id")
-	private Address deliveryAddress;
-
-	@ManyToOne
-	@JoinColumn(name = "credit_card_id")
-	private CreditCard creditCard;
 
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -58,16 +32,31 @@ public class Order extends HibernateEntity {
 	private Date createdDate;
 
 	@Column
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Date deliveryEstimateDate;
 
 	@Column
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Date deliveredDate;
 
 	@Column
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Date cancelledDate;
+
+	@ManyToOne
+	@PrimaryKeyJoinColumn(name = "customer_id", referencedColumnName="id")
+	private Customer customer;
+
+	@ManyToOne
+	@JoinColumn(name = "delivery_address_id")
+	private Address deliveryAddress;
+
+	@ManyToOne
+	@JoinColumn(name = "credit_card_id")
+	private CreditCard creditCard;
+
+	@ManyToMany
+	@JoinTable(name = "order_items",
+			joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id", updatable = false, nullable = false),
+			inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id", updatable = false, nullable = false))
+	private List<Item> items = new ArrayList<>();
 
 	public Order(Customer customer, Date createdDate, OrderStatus status, Address deliveryAddress, Double totalCost,
 			CreditCard creditCard) {
@@ -82,7 +71,6 @@ public class Order extends HibernateEntity {
 	public Order() {
 	}
 
-	@JsonIgnore
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -91,7 +79,6 @@ public class Order extends HibernateEntity {
 		this.customer = customer;
 	}
 
-	@JsonIgnore
 	public Address getDeliveryAddress() {
 		return deliveryAddress;
 	}
@@ -100,7 +87,6 @@ public class Order extends HibernateEntity {
 		this.deliveryAddress = deliveryAddress;
 	}
 
-	@JsonIgnore
 	public CreditCard getCreditCard() {
 		return creditCard;
 	}
@@ -149,7 +135,6 @@ public class Order extends HibernateEntity {
 		this.cancelledDate = cancelledDate;
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public List<Item> getItems() {
 		return items;
 	}
@@ -170,6 +155,15 @@ public class Order extends HibernateEntity {
 		items.add(item);
 	}
 
+	public void addItems(List<Item> items) {
+		this.items.addAll(items);
+	}
+
+	@Transient
+	public String getCustomerFullname() {
+		return customer.getFullName();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -186,4 +180,5 @@ public class Order extends HibernateEntity {
 	public int hashCode() {
 		return Objects.hash(customer, totalCost, createdDate);
 	}
+
 }

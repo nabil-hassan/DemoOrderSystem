@@ -5,17 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
-import demo.entity.Address;
-import demo.entity.Customer;
-import demo.entity.Item;
-import demo.entity.Title;
+import demo.entity.persistent.Customer;
 
 public class CustomerVerifier extends Verifier<Customer> {
 

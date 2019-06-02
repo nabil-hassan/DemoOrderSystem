@@ -1,14 +1,12 @@
-package demo.entity;
+package demo.entity.persistent;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.*;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "address")
@@ -27,31 +25,24 @@ public class Address extends HibernateEntity {
 	private String postcode;
 
 	@Column
-	@JsonInclude(NON_NULL)
 	private String line1;
 
 	@Column
-	@JsonInclude(NON_NULL)
 	private String line2;
 	
 	@Column
-	@JsonInclude(NON_NULL)
 	private String line3;
 	
 	@Column
-	@JsonInclude(NON_NULL)
 	private String line4;
 
 	@Column
-	@JsonInclude(NON_NULL)
 	private String line5;
 	
 	@Column
-	@JsonInclude(NON_NULL)
 	private Double latitude;
 	
 	@Column
-	@JsonInclude(NON_NULL)
 	private Double longitude;
 
 	@SuppressWarnings("unused")
@@ -169,6 +160,25 @@ public class Address extends HibernateEntity {
 		return Objects.equals(line1, other.line1) && Objects.equals(line2, other.line2)
 				&& Objects.equals(postcode, other.postcode);
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		List<String> nonNullList = new ArrayList<>();
+		addIfNotNull(nonNullList, line1);
+		addIfNotNull(nonNullList, line2);
+		addIfNotNull(nonNullList, line3);
+		addIfNotNull(nonNullList, line4);
+		addIfNotNull(nonNullList, line5);
+		addIfNotNull(nonNullList, town);
+		addIfNotNull(nonNullList, county);
+		addIfNotNull(nonNullList, country);
+		addIfNotNull(nonNullList, postcode);
+		return String.join(",", nonNullList);
+	}
+
+	private void addIfNotNull(List<String> list, String s) {
+		if (s!=null) {
+			list.add(s);
+		}
+	}
 }

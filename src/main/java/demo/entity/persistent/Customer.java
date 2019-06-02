@@ -1,4 +1,4 @@
-package demo.entity;
+package demo.entity.persistent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -18,47 +17,43 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="customer")
 public class Customer extends HibernateEntity {
 
+	@Enumerated(EnumType.STRING)
+	@Column
+	private Title title;
+
+	@Column
+	private String forename;
+
+	@Column
+	private String surname;
+
+	@Column
+	private String contactNumber;
+
+	@Column
+	private String emailAddress;
+
 	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Basket basket;
 	
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Order> orders = new HashSet<>();
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CreditCard> cards = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable(name = "customer_addresses",
 			joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id", updatable = false, nullable = false),
 			inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id", updatable = false, nullable = false))
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private Set<Address> addresses = new HashSet<>();
 
-	@Enumerated(EnumType.STRING)
-	@Column
-	private Title title;
-	
-	@Column
-	private String forename;
-	
-	@Column
-	private String surname;
-	
-	@Column
-	private String contactNumber;
-	
-	@Column
-	private String emailAddress;
-	
 	public Customer(Title title, String forename, String surname, String contactNumber, String emailAddress) {
 		this.title = title;
 		this.forename = forename;
@@ -169,7 +164,7 @@ public class Customer extends HibernateEntity {
 
 	@Transient
 	public String getFullName() {
-		return (title != null ? title.name() + " " : "")
+		return (title != null ? title.getValue() + " " : "")
 				+ (forename != null ? forename + " " : "")
 				+ (surname != null ? surname : "").trim();
 	}

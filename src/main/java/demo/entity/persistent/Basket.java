@@ -1,12 +1,10 @@
-package demo.entity;
+package demo.entity.persistent;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -66,7 +64,4 @@ public class Basket extends HibernateEntity {
         items.clear();
     }
 
-    public Map<Item, Integer> itemCountMap() {
-        return items.stream().collect(Collectors.groupingBy(i -> i, Collectors.summingInt(x -> 1)));
-    }
 }

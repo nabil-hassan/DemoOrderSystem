@@ -1,5 +1,7 @@
-package demo.entity;
+package demo.entity.persistent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -131,6 +133,5 @@ public class CreditCard extends HibernateEntity {
 				&& Objects.equals(expiryDate, other.expiryDate) && Objects.equals(securityCode, other.securityCode)
 				&& Objects.equals(sortCode, other.sortCode);
 	}
-
 }
 	

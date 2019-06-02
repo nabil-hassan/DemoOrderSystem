@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import demo.entity.Item;
+import demo.entity.persistent.Item;
 import demo.service.ItemService;
 
 @RestController

@@ -2,7 +2,7 @@ package demo.dao;
 
 import org.hibernate.SessionFactory;
 
-import demo.entity.Customer;
+import demo.entity.persistent.Customer;
 
 public class CustomerDAO extends BaseDAO<Customer>{
 

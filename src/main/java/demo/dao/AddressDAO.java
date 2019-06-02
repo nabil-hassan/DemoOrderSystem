@@ -2,7 +2,7 @@ package demo.dao;
 
 import org.hibernate.SessionFactory;
 
-import demo.entity.Address;
+import demo.entity.persistent.Address;
 
 public class AddressDAO extends BaseDAO<Address> {
 

@@ -1,12 +1,10 @@
-package demo.entity;
+package demo.entity.persistent;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
 public abstract class HibernateEntity {
@@ -15,7 +13,6 @@ public abstract class HibernateEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonIgnore
 	@Version
 	private Integer version;
 

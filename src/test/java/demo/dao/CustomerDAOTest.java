@@ -12,14 +12,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import demo.entity.Address;
-import demo.entity.Basket;
-import demo.entity.CreditCard;
-import demo.entity.Customer;
-import demo.entity.Item;
-import demo.entity.Order;
-import demo.entity.OrderStatus;
-import demo.entity.Title;
+import demo.entity.persistent.Address;
+import demo.entity.persistent.Basket;
+import demo.entity.persistent.CreditCard;
+import demo.entity.persistent.Customer;
+import demo.entity.persistent.Item;
+import demo.entity.persistent.Order;
+import demo.entity.persistent.OrderStatus;
+import demo.entity.persistent.Title;
 import demo.verifier.CustomerVerifier;
 
 public class CustomerDAOTest extends DAOTest {

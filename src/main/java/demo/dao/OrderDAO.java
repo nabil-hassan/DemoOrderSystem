@@ -2,7 +2,7 @@ package demo.dao;
 
 import org.hibernate.SessionFactory;
 
-import demo.entity.Order;
+import demo.entity.persistent.Order;
 
 public class OrderDAO extends BaseDAO<Order> {
 

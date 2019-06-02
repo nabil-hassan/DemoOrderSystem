@@ -1,4 +1,4 @@
-package demo.entity;
+package demo.entity.persistent;
 
 public enum Title {
 
@@ -8,5 +8,9 @@ public enum Title {
 
 	Title(String value) {
 		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
 	}
 }

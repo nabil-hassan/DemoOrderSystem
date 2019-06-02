@@ -8,37 +8,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Transactional;
 
+import demo.converter.OrderConverter;
 import demo.dao.AddressDAO;
 import demo.dao.CreditCardDAO;
 import demo.dao.CustomerDAO;
 import demo.dao.OrderDAO;
-import demo.entity.Address;
-import demo.entity.Basket;
-import demo.entity.CreditCard;
-import demo.entity.Customer;
-import demo.entity.HibernateEntity;
-import demo.entity.Item;
-import demo.entity.Order;
-import demo.entity.OrderStatus;
+import demo.entity.dto.OrderDetails;
+import demo.entity.persistent.Address;
+import demo.entity.persistent.Basket;
+import demo.entity.persistent.CreditCard;
+import demo.entity.persistent.Customer;
+import demo.entity.persistent.Item;
+import demo.entity.persistent.Order;
+import demo.entity.persistent.OrderStatus;
+import demo.entity.dto.OrderSummary;
 import demo.exception.BasketEmptyException;
+import demo.exception.EntityNotAssociatedException;
 import demo.exception.EntityNotFoundException;
 import demo.exception.InsufficientStockException;
 
 public class OrderService {
 
-    private AddressDAO addressDAO;
-    private CreditCardDAO creditCardDAO;
+    private OrderConverter orderConverter;
     private CustomerDAO customerDAO;
     private OrderDAO orderDAO;
 
-    public OrderService(AddressDAO addressDAO, CreditCardDAO creditCardDAO, CustomerDAO customerDAO,
-            OrderDAO orderDAO) {
-        this.addressDAO = addressDAO;
-        this.creditCardDAO = creditCardDAO;
+    public OrderService(CustomerDAO customerDAO,
+            OrderDAO orderDAO, OrderConverter orderConverter) {
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
+        this.orderConverter = orderConverter;
     }
 
     /**
@@ -50,25 +52,23 @@ public class OrderService {
      * @return the orders
      */
     @Transactional
-    public Order getOrder(Long orderId) {
+    public OrderDetails getOrder(Long orderId) {
         Order order = orderDAO.get(orderId);
 
         if (order == null) {
             throw new EntityNotFoundException(Order.class, orderId);
         }
 
-        return order;
+        order.getItems(); //initialises collection
+
+        return orderConverter.toOrderDetails(order);
     }
 
     @Transactional
-    public List<Order> findAllOrders(Long customerId) {
-        Customer customer = customerDAO.get(customerId);
-
-        if (customer == null) {
-            throw new EntityNotFoundException(Customer.class, customerId);
-        }
-
-        return customer.getOrders().stream().sorted(Comparator.comparing(Order::getCreatedDate)).collect(Collectors.toList());
+    public List<OrderSummary> findAll() {
+        return orderDAO.findAll().stream().sorted(Comparator.comparing(Order::getCreatedDate).reversed())
+                .map(orderConverter::toOrderSummary)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -80,79 +80,16 @@ public class OrderService {
      * @return the orders
      */
     @Transactional
-    public List<Order> getAllOrders(Long customerId) {
+    public List<OrderSummary> findAllForCustomer(Long customerId) {
         Customer customer = customerDAO.get(customerId);
 
         if (customer == null) {
             throw new EntityNotFoundException(Customer.class, customerId);
         }
 
-        return customer.getOrders().stream()
-                .sorted(Comparator.comparing(Order::getCreatedDate).reversed()).collect(Collectors.toList());
-    }
-
-    /**
-     * Checks out the contents of a customer's basket to create a new order.
-     *
-     * If the customer or does not exist, an {@link EntityNotFoundException} is thrown.
-     *
-     * If the customer has no associated basket, an {@link BasketEmptyException} is thrown.
-     *
-     * If the customer's basket is empty,
-     *
-     * If any items are no longer in stock, an {@link InsufficientStockException} is thrown.
-     *
-     * @param customerId the id of the customer
-     * @param addressId the id of the address
-     * @param cardId the id of the payment method
-     * @return the created order
-     */
-    @Transactional
-    public Order checkout(Long customerId, Long addressId, Long cardId) {
-        Customer customer = customerDAO.get(customerId);
-        if (customer == null) {
-            throw new EntityNotFoundException(Customer.class, customerId);
-        }
-
-        Address address = addressDAO.get(addressId);
-        if (address == null) {
-            throw new EntityNotFoundException(Address.class, addressId);
-        }
-
-        CreditCard card = creditCardDAO.get(cardId);
-        if (card == null) {
-            throw new EntityNotFoundException(CreditCard.class, cardId);
-        }
-
-        Basket basket = customer.getBasket();
-        if (basket == null) {
-            throw new IllegalStateException("Customer has no basket");
-        }
-        if (basket.isEmpty()) {
-            throw new BasketEmptyException(customerId);
-        }
-
-        // Check stock quantities, update stock counts, calculate total cost
-        Map<Item, Integer> basketItemCountMap = basket.itemCountMap();
-        Map<Item, Integer> newItemStockCount = new HashMap<>();
-        List<Long> insufficientStockIds = new ArrayList<>();
-        Double totalCost = 0d;
-        for (Map.Entry<Item, Integer> entry : basketItemCountMap.entrySet()) {
-            Item item = entry.getKey();
-            Integer itemCount = entry.getValue();
-            int newCount = item.getStockQuantity() - itemCount;
-            if (newCount < 0) {
-                insufficientStockIds.add(item.getId());
-            }
-            newItemStockCount.put(item, newCount);
-            totalCost += (item.getCost() * itemCount);
-        }
-        if (insufficientStockIds.size() > 0) {
-            throw new InsufficientStockException(insufficientStockIds);
-        }
-        newItemStockCount.forEach(Item::setStockQuantity);
-
-        return new Order(customer, new Date(), OrderStatus.NEW, address, totalCost, card);
+        return customer.getOrders().stream().sorted(Comparator.comparing(Order::getCreatedDate).reversed())
+                .map(orderConverter::toOrderSummary)
+                .collect(Collectors.toList());
     }
 
 }

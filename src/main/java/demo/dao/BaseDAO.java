@@ -8,7 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import demo.entity.HibernateEntity;
+import demo.entity.persistent.HibernateEntity;
 
 public abstract class BaseDAO<T extends HibernateEntity> {
 

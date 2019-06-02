@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import demo.dao.ItemDAO;
-import demo.entity.Item;
+import demo.entity.persistent.Item;
 
 public class ItemService {
 

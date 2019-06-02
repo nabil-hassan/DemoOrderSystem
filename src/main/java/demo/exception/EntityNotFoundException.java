@@ -1,6 +1,6 @@
 package demo.exception;
 
-import demo.entity.HibernateEntity;
+import demo.entity.persistent.HibernateEntity;
 
 public class EntityNotFoundException extends RuntimeException {
 

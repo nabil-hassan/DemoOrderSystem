@@ -4,6 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import demo.converter.BasketConverter;
+import demo.converter.CustomerConverter;
+import demo.converter.ItemConverter;
+import demo.converter.OrderConverter;
 import demo.dao.AddressDAO;
 import demo.dao.CreditCardDAO;
 import demo.dao.CustomerDAO;
@@ -15,23 +19,25 @@ import demo.service.ItemService;
 import demo.service.OrderService;
 
 @Configuration
-@Import(PersistenceConfig.class)
+@Import({ConverterConfig.class, PersistenceConfig.class})
 public class ServiceConfig {
 
     @Bean
-    public BasketService basketService(ItemDAO itemDAO, CustomerDAO customerDAO) {
-        return new BasketService(itemDAO, customerDAO);
+    public BasketService basketService(AddressDAO addressDAO, BasketConverter basketConverter,
+            CreditCardDAO creditCardDAO, CustomerDAO customerDAO, ItemConverter itemConverter, ItemDAO itemDAO,
+            OrderConverter orderConverter, OrderDAO orderDAO) {
+        return new BasketService(addressDAO, basketConverter, creditCardDAO, customerDAO, itemDAO, itemConverter,
+                orderConverter, orderDAO);
     }
 
     @Bean
-    public CustomerService customerService(CustomerDAO customerDAO) {
-        return new CustomerService(customerDAO);
+    public CustomerService customerService(CustomerDAO customerDAO, CustomerConverter customerConverter) {
+        return new CustomerService(customerDAO, customerConverter);
     }
 
     @Bean
-    public OrderService orderService(AddressDAO addressDAO, CreditCardDAO creditCardDAO, CustomerDAO customerDAO,
-            OrderDAO orderDAO) {
-        return new OrderService(addressDAO, creditCardDAO, customerDAO, orderDAO);
+    public OrderService orderService(CustomerDAO customerDAO, OrderDAO orderDAO, OrderConverter orderConverter) {
+        return new OrderService(customerDAO, orderDAO, orderConverter);
     }
 
     @Bean

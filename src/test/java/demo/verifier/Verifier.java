@@ -6,9 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.springframework.util.comparator.Comparators;
-
-import demo.entity.HibernateEntity;
+import demo.entity.persistent.HibernateEntity;
 
 /**
  * Verifies a persisted Hibernate object matches expected values.

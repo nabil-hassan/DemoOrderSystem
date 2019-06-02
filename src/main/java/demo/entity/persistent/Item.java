@@ -1,13 +1,10 @@
-package demo.entity;
+package demo.entity.persistent;
 
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "item")
@@ -19,7 +16,6 @@ public class Item extends HibernateEntity {
 	@Column
 	private String modelNumber;
 
-	@JsonIgnore
 	@Column
 	private Integer weightKg;
 

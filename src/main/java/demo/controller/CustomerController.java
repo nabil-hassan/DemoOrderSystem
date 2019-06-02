@@ -4,16 +4,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import demo.entity.Customer;
-import demo.entity.CustomerSummary;
-import demo.entity.Order;
-import demo.entity.OrderSummary;
+import demo.entity.dto.CustomerDetails;
+import demo.entity.dto.CustomerSummary;
+import demo.entity.persistent.Order;
+import demo.entity.dto.OrderSummary;
 import demo.service.CustomerService;
 import demo.service.OrderService;
 
@@ -29,22 +28,19 @@ public class CustomerController {
         this.orderService = orderService;
     }
 
-    @GetMapping(value = "/{id}")
-    public Customer getCustomer(@PathVariable Long id) {
+    @GetMapping
+    public List<CustomerSummary> findAllCustomers() {
+        return customerService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public CustomerDetails getCustomer(@PathVariable Long id) {
         return customerService.get(id);
     }
 
-    @GetMapping
-    public List<CustomerSummary> findAllCustomers() {
-        return customerService.findAll().stream().map(CustomerSummary::new).collect(Collectors.toList());
-    }
-
     @GetMapping(value = "/{id}/orders")
-    @Transactional
     public List<OrderSummary> getAllOrdersForCustomer(@PathVariable Long id) {
-        return orderService.getAllOrders(id).stream()
-                .sorted(Comparator.comparing(Order::getCreatedDate).reversed())
-                .map(OrderSummary::new).collect(Collectors.toList());
+        return orderService.findAllForCustomer(id);
     }
 
 }
