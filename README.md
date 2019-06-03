@@ -47,6 +47,7 @@ The system supports a number of GET requests, but create-update requests will ne
 |`http://localhost:8080/demo/api/orders/{orderId}`|GET|Gets details for a specific order|`curl http://localhost:8080/demo/api/orders/1`
 |`http://localhost:8080/demo/api/customers/`|GET|Summarises all customers in the system|`curl http://localhost:8080/demo/api/customers/`
 |`http://localhost:8080/demo/api/customers/{customerId}`|GET|Gets details for a specific customer|`curl http://localhost:8080/demo/api/customers/1`
+|`http://localhost:8080/demo/api/customers/{customerId}/orders`|GET|Gets orders for a specific customer|`curl http://localhost:8080/demo/api/customers/1/orders`
 |`http://localhost:8080/demo/api/basket/{customerId}`|GET|Gets details for a specific customer's basket|`curl http://localhost:8080/demo/api/basket/1`
 |`http://localhost:8080/demo/api/basket/{customerId}/item/{itemId}`|PUT|Adds an item to a customer's basket|`curl -H "Content-Type: application/json" -X PUT http://localhost:8080/demo/api/basket/1/item/1`
 |`http://localhost:8080/demo/api/basket/{customerId}/item/{itemId}`|DELETE|Removes an item from a customer's basket|`curl -H "Content-Type: application/json" -X DELETE http://localhost:8080/demo/api/basket/1/item/1`
