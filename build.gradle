@@ -58,3 +58,19 @@ task persistenceTests(type: Test) {
         logger.lifecycle("Running test: " + descriptor)
     } 
 }
+
+task serviceTests(type: Test) {
+    useJUnit {
+        includeCategories 'demo.categories.ServiceTest'
+    }
+     
+    group = 'verification'
+    
+    description ='Runs all sewrvice layer tests' 
+     
+    testLogging.showStandardStreams = true
+ 
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    } 
+}
