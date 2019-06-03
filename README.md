@@ -1,5 +1,5 @@
 # Overview
-Demo REST API system, built using Spring &amp; Hibernate. Runs against MySQL, and a suitable servlet container, such as Tomcat.
+Demo REST API system, built using Spring &amp; Hibernate. Runs against MySQL and a suitable servlet container, such as Tomcat.
 
 Built via Gradle; has a set of unit and integration tests, to ensure build stability.
 
@@ -18,9 +18,9 @@ The integration tests run can be run via the 'persistenceTests' and 'serviceTest
 
 The system is designed to be run against MySQL 8+ and a suitable servlet container.
 
-The database schema is created and dropped automatically, but you will need to setup the correct schema and user/password.
+The database tables are created and dropped automatically on application startup/shutdown, but you will need to setup the correct schema and user/password on MySQL.
 
-There is a set of initial data loaded into the database when the application starts up, to facilitate easy system viewing/testing.
+An initial set of data is loaded into the database when the application starts up, to facilitate easy system viewing/testing.
 
 ## MySQL Configuration
 
