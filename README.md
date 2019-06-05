@@ -49,6 +49,6 @@ The system supports a number of GET requests, but create-update requests will ne
 |`http://localhost:8080/demo/api/customers/{customerId}`|GET|Gets details for a specific customer|`curl http://localhost:8080/demo/api/customers/1`
 |`http://localhost:8080/demo/api/customers/{customerId}/orders`|GET|Gets orders for a specific customer|`curl http://localhost:8080/demo/api/customers/1/orders`
 |`http://localhost:8080/demo/api/basket/{customerId}`|GET|Gets details for a specific customer's basket|`curl http://localhost:8080/demo/api/basket/1`
-|`http://localhost:8080/demo/api/basket/{customerId}/item/{itemId}`|PUT|Adds an item to a customer's basket|`curl -H "Content-Type: application/json" -X PUT http://localhost:8080/demo/api/basket/1/item/1`
-|`http://localhost:8080/demo/api/basket/{customerId}/item/{itemId}`|DELETE|Removes an item from a customer's basket|`curl -H "Content-Type: application/json" -X DELETE http://localhost:8080/demo/api/basket/1/item/1`
+|`http://localhost:8080/demo/api/basket/{customerId}/addItem/{itemId}`|POST|Adds an item to a customer's basket|`curl -H "Content-Type: application/json" -X POST http://localhost:8080/demo/api/basket/1/addItem/1`
+|`http://localhost:8080/demo/api/basket/{customerId}/removeItem/{itemId}`|POST|Removes an item from a customer's basket|`curl -H "Content-Type: application/json" -X POST http://localhost:8080/demo/api/basket/1/removeItem/1`
 |`http://localhost:8080/demo/api/basket/{customerId}/checkout`|POST|Checks out a customer's basket to create a new order|`curl -H "Content-Type: application/json" -d '{"addressId":"1", "cardId":"1"}' -X POST http://localhost:8080/demo/api/basket/1/checkout`

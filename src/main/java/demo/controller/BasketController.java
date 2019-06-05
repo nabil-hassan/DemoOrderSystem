@@ -1,11 +1,9 @@
 package demo.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,8 +13,6 @@ import demo.entity.dto.BasketDetails;
 import demo.entity.dto.OrderDetails;
 import demo.entity.request.CheckoutRequest;
 import demo.service.BasketService;
-import demo.service.CustomerService;
-import demo.service.OrderService;
 
 @RestController
 @RequestMapping(path = "/basket")
@@ -33,12 +29,12 @@ public class BasketController {
         return basketService.getBasketDetails(customerId);
     }
 
-    @PutMapping("/{customerId}/item/{itemId}")
+    @PostMapping("/{customerId}/addItem/{itemId}")
     public BasketDetails addToBasket(@PathVariable Long customerId, @PathVariable Long itemId) {
         return basketService.addItemToBasket(customerId, itemId);
     }
 
-    @DeleteMapping("/{customerId}/item/{itemId}")
+    @PostMapping("/{customerId}/removeItem/{itemId}")
     public BasketDetails removeFromBasket(@PathVariable Long customerId, @PathVariable Long itemId) {
         return basketService.removeItemFromBasket(customerId, itemId);
     }
